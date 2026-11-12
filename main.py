@@ -26,7 +26,15 @@ def user_input(msg, decalage):
 print('Bienvenue sur mon Script de Déchiffrement César')
 
 # --------- PROGRAMME PRINCIPAL
+option = input('Voulez-vous chiffrer (c) ou déchiffrer (d) votre message ? ')
 msg = input("Veuillez saisir votre texte : ")
 decalage = int(input('Veuillez saisir votre decalage : '))
 
-print(user_input(msg, decalage))
+if option == 'c' :
+    print(user_input(msg, decalage))
+elif option == 'd': 
+    print(user_input(msg, -decalage))
+else: 
+    print('Vous avez choisi un mode inexistant')
+
+
