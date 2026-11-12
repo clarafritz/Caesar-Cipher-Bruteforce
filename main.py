@@ -1,4 +1,5 @@
 # --------- FONCTIONS
+# Fonction qui chiffre / déchiffre un msg avec un décalage précis 
 def user_input(msg, decalage): 
     result = ''
 
@@ -21,19 +22,40 @@ def user_input(msg, decalage):
     return result
 
 
+
+# Fonction : attaque par force brut : test les 26 clés grâce la fonction user_input()
+def brute_force(msg): 
+    for key in range(26):
+        print('key (', key, ') : ', user_input(msg, key))
+
+
+
+
 # ------------------------------------------------------
 # --------- INTRODUCTION SCRIPT 
-print('Bienvenue sur mon Script de Déchiffrement César')
+print('==== CAESAR CIPHER ====')
 
 # --------- PROGRAMME PRINCIPAL
-option = input('Voulez-vous chiffrer (c) ou déchiffrer (d) votre message ? ')
-msg = input("Veuillez saisir votre texte : ")
-decalage = int(input('Veuillez saisir votre decalage : '))
+option = input(
+    'Choisissez votre option : \n' 
+    '   c --> chiffrement \n' 
+    '   d --> dechiffrement \n' 
+    '   b --> attaque par force brute \n'
+    'Votre choix : '
+)
+msg = input("Message à analyser : ")
 
-if option == 'c' :
-    print(user_input(msg, decalage))
-elif option == 'd': 
-    print(user_input(msg, -decalage))
+
+if option == 'b':
+    brute_force(msg)
+elif option == 'c' or option == 'd':
+    decalage = int(input('Veuillez saisir votre decalage : '))
+
+    if option == 'c' :
+        print(user_input(msg, decalage))
+    else:
+        print(user_input(msg, -decalage))
+        
 else: 
     print('Vous avez choisi un mode inexistant')
 
