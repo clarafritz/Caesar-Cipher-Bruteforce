@@ -61,6 +61,32 @@ def frequency_analysis(msg):
     return mot_analyser
 
 
+# Fonction : comparer 2 frequences (average / analysis) => return score
+def similarity_score(msg):
+    mot_analyser = frequency_analysis(msg)
+    if mot_analyser == {}:
+        return 
+    
+    score = 0
+
+    for lettre in average_frequency:
+        if lettre not in mot_analyser: 
+            score += average_frequency[lettre]
+        else: 
+            f_avgf = average_frequency[lettre]
+            f_mot = mot_analyser[lettre]
+
+            diff = f_avgf - f_mot
+
+            if diff < 0:
+                score += -(diff)
+            else: 
+                score += diff
+
+    return score
+
+
+
 
 
 # ------------------------------------------------------------------------------------------------------------
@@ -102,5 +128,4 @@ elif option == 'c' or option == 'd':
 else: 
     print('Vous avez choisi un mode inexistant')
 
-
-frequency_analysis(msg)
+print(similarity_score(msg))
