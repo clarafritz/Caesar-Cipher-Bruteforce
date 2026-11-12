@@ -22,16 +22,49 @@ def user_input(msg, decalage):
     return result
 
 
-
 # Fonction : attaque par force brut : test les 26 clés grâce la fonction user_input()
 def brute_force(msg): 
     for key in range(26):
         print('key (', key, ') : ', user_input(msg, key))
 
 
+# Fonction : analyse caractere + calcule % de chaque lettre présente
+def frequency_analysis(msg):
+    alphabet = {
+        'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0,
+        'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0,
+        'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0,
+        'p': 0, 'q': 0, 'r': 0, 's': 0, 't': 0,
+        'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0,
+        'z': 0
+    }
+
+    msg = msg.lower()
+    total_lettre = 0
+    mot_analyser = {}
+
+    for lettre in msg: 
+        if lettre.isalpha() and lettre.isascii():
+            alphabet[lettre] += 1
+            total_lettre += 1
+
+    if total_lettre == 0:
+        print('Aucune lettre valide à analyser')
+        return mot_analyser 
+
+    for lettre, occ in alphabet.items():
+        if occ != 0:
+            frequence = (occ / total_lettre) * 100
+            mot_analyser[lettre.upper()] = round(frequence, 2)
+            print(f"Lettre : {lettre.upper()} | Occurrences : {occ} | Fréquence : {round(frequence, 2)}%")
+
+    return mot_analyser
 
 
-# ------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
 # --------- INTRODUCTION SCRIPT 
 print('==== CAESAR CIPHER ====')
 
@@ -60,3 +93,6 @@ else:
     print('Vous avez choisi un mode inexistant')
 
 
+
+
+print(frequency_analysis(msg))
