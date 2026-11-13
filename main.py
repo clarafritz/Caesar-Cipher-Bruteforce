@@ -24,12 +24,19 @@ def user_input(msg, decalage):
 
 # Fonction : attaque par force brut : test les 26 clés grâce la fonction user_input()
 def brute_force(msg): 
+    result = []
     for key in range(26):
-        print('key (', key, ') : ', user_input(msg, key))
+        message = user_input(msg, key)
+        score_prop = similarity_score(message)
+        if score_prop is not None: 
+            result.append({"key": key, "message": message, "score": score_prop})
+
+    result.sort(key=lambda item: item["score"])
+    return result
 
 
 # Fonction : analyse caractere + calcule % de chaque lettre présente
-def frequency_analysis(msg):
+def frequency_analysis(msg, option_frequence = False):
     alphabet = {
         'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0,
         'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0,
@@ -49,14 +56,16 @@ def frequency_analysis(msg):
             total_lettre += 1
 
     if total_lettre == 0:
-        print('Aucune lettre valide à analyser')
+        if option_frequence == True:
+            print('Aucune lettre valide à analyser')
         return mot_analyser 
 
     for lettre, occ in alphabet.items():
         if occ != 0:
             frequence = (occ / total_lettre) * 100
             mot_analyser[lettre.upper()] = round(frequence, 2)
-            print(f"Lettre : {lettre.upper()} | Occurrences : {occ} | Fréquence : {round(frequence, 2)}%")
+            if option_frequence == True:
+                print(f"Lettre : {lettre.upper()} | Occurrences : {occ} | Fréquence : {round(frequence, 2)}%")
 
     return mot_analyser
 
@@ -105,6 +114,7 @@ average_frequency = {
 print('==== CAESAR CIPHER ====')
 
 # --------- PROGRAMME PRINCIPAL
+# --- Selection du mode + option affichage 
 option = input(
     'Choisissez votre option : \n' 
     '   c --> chiffrement \n' 
@@ -113,13 +123,22 @@ option = input(
     'Votre choix : '
 )
 msg = input("Message à analyser : ")
+user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ")
+
+if user_frequence == 'o' : 
+    option_frequence = True
+else: 
+    option_frequence = False 
 
 
+# ---- mode 
 if option == 'b':
-    brute_force(msg)
+    result = brute_force(msg)
+    for prop in result:
+        print("Key : ", prop["key"], " || Message : ", prop["message"], " || Score : ", prop["score"])
+
 elif option == 'c' or option == 'd':
     decalage = int(input('Veuillez saisir votre decalage : '))
-
     if option == 'c' :
         print(user_input(msg, decalage))
     else:
@@ -127,5 +146,3 @@ elif option == 'c' or option == 'd':
         
 else: 
     print('Vous avez choisi un mode inexistant')
-
-print(similarity_score(msg))
